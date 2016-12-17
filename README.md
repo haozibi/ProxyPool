@@ -16,7 +16,7 @@ package main
 
 import (
 	"fmt"
-	proxy "github.com/haozibi/Brk5/proxy"
+	proxy "coding.net/haozibi/ProxyPool"
 )
 
 func main() {
