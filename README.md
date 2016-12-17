@@ -10,13 +10,18 @@
 
 > **空的 for 循环会导致 CPU 剧增**
 
+## 安装
+
+> go get -u -v github.com/haozibi/ProxyPool
+
+
 ## 示例
 ```
 package main
 
 import (
 	"fmt"
-	proxy "coding.net/haozibi/ProxyPool"
+	proxy "github.com/haozibi/ProxyPool"
 )
 
 func main() {
