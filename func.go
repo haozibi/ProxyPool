@@ -10,13 +10,11 @@ import (
 )
 
 var proxyAllList chan string = make(chan string, 300)
-var proxyOkList chan string = make(chan string, 30)
+var proxyOkList chan string = make(chan string, 100)
 var proxyNum int = 0
 var ProxyProNum int = 50
-var mu sync.Mutex
-var mu2 sync.Mutex
-var rmu sync.RWMutex
-var rmu2 sync.RWMutex
+var mu, mu2 sync.Mutex
+var rmu, rmu2 sync.RWMutex
 var TestUrl = "http://www.baidu.com"
 
 func init() {
