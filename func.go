@@ -31,7 +31,7 @@ func init() {
 	gg.SetOutSimple(true)
 
 	// 一开始就进行代理获取
-	checkProxy()
+	// checkProxy()
 }
 
 func GetProxy() (proxyUri string) {
@@ -72,7 +72,7 @@ func getProxyList() []string {
 	return tmpList
 }
 
-func checkProxy() {
+func Start() {
 	gg.Infoln("Start")
 	go func() {
 		for {
