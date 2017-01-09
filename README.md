@@ -34,6 +34,9 @@ func main() {
 	// 自定义线程数，默认50
 	proxy.ProxyProNum = 100
 
+	// 启动程序
+	proxy.Start()
+
 	for {
 		// GetProxy() 返回 175.171.246.195:8118 格式
 		fmt.Println("Get ", proxy.GetProxy())
