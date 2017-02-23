@@ -2,11 +2,12 @@ package proxy
 
 import (
 	"flag"
-	gg "github.com/haozibi/gglog"
 	"net/http"
 	"net/url"
 	"sync"
 	"time"
+
+	gg "github.com/haozibi/gglog"
 )
 
 var proxyAllList chan string = make(chan string, 300)
@@ -60,9 +61,9 @@ func Setting(flag bool) {
 
 func getProxyList() []string {
 	var tmpList = make([]string, 300)
-	for _, v := range proxyOne() {
-		tmpList = append(tmpList, v)
-	}
+	// for _, v := range proxyOne() {
+	// 	tmpList = append(tmpList, v)
+	// }
 	for _, v := range proxyTwo() {
 		tmpList = append(tmpList, v)
 	}

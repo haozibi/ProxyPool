@@ -3,12 +3,13 @@ package proxy
 import (
 	//"flag"
 	"fmt"
-	gg "github.com/haozibi/gglog"
 	"io/ioutil"
 	"net/http"
 	"regexp"
 	"strconv"
 	"strings"
+
+	gg "github.com/haozibi/gglog"
 )
 
 // 每个网站一次获取100个，共300个
@@ -39,7 +40,18 @@ func proxyTwo() []string {
 func proxyThree() []string {
 	var tmpList = make([]string, 100)
 	for i := 1; i <= 10; i++ {
-		resp, err := http.Get(proxyThreeUri + strconv.Itoa(i))
+		client := &http.Client{}
+		req, _ := http.NewRequest(
+			"GET",
+			proxyThreeUri+strconv.Itoa(i),
+			nil,
+		)
+		req.Header.Set("Accept", "application/json, text/javascript, */*; q=0.01")
+		req.Header.Set("Accept-Encoding", "text/html")
+		req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36")
+		req.Header.Set("X-Requested-With", "XMLHttpRequest")
+		req.Header.Set("Content-Type", "application/x-www-form-urlencoded; param=value")
+		resp, err := client.Do(req)
 		if err != nil {
 			gg.Errorln("Error: ", err)
 			return nil
