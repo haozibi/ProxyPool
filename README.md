@@ -1,60 +1,50 @@
 # proxy
 
-**免费代理ip筛选**
+[![Build Status](https://travis-ci.org/haozibi/ProxyPool.svg?branch=master)](https://travis-ci.org/haozibi/ProxyPool) ![](https://img.shields.io/badge/language-go-blue.svg)
 
-由于网络上免费获取的代理不尽人意，所以写了个程序对免费代理进行筛选，暂时支持三个免费代理网站
+**代理 IP 筛选**，由于网络上获取的代理不尽人意，所以写了个程序对代理进行筛选。
 
 个人感觉代理的时效性，所以没有进行持久化设计。*分布式进行持久化设计比较好*
 
-*多线程效率非常高*
-
-> **空的 for 循环会导致 CPU 剧增**
 
 ## 安装
 
 > go get -u -v github.com/haozibi/ProxyPool
 
+**注意：**可以参考 `proxy/web.66ip.cn.go` 和 `proxy/web.test.go` 编写专属获取代码获取更多待筛选的代理 IP
 
 ## 示例
-```
+
+```go
 package main
 
 import (
-	"fmt"
-	proxy "github.com/haozibi/ProxyPool"
+	"github.com/haozibi/ProxyPool/proxy"
+	gg "github.com/haozibi/gglog"
 )
 
 func main() {
-	// 是否输出调试信息，true输出，false不输出。默认不输出
-	proxy.Setting(true)
-
-	// 自定义ip测试连接，默认 http://www.baidu.com
-	proxy.TestUrl = "http://www.baidu.com"
-
-	// 自定义线程数，默认50
-	proxy.ProxyProNum = 100
-
-	// 启动程序
-	proxy.Start()
-
+	// 设置代理测试网站
+	err := proxy.SetTestUrl("http://www.weibo.com")
+	if err != nil {
+		panic(err)
+	}
+	// 开始测试代理
+	proxy.StartProxy()
 	for {
-		// GetProxy() 返回 175.171.246.195:8118 格式
-		fmt.Println("Get ", proxy.GetProxy())
+		gg.Infoln("get ==>", proxy.GetProxy())
 	}
 }
-
 ```
 ## 注意
 
-当可用 IP 达到 100 个则停止筛选，一旦少于 100 即立刻继续筛选
+代理 IP 测试暂时只支持 `http://`，不支持 `https://`
 
 ## 免费IP参考
 
-共使用了3个免费网站
+**只是测试网站，请不要滥用！**
 
-* 西刺代理 [http://api.xicidaili.com/free2016.txt](http://api.xicidaili.com/free2016.txt)
-* 代理66 [http://www.66ip.cn/](http://www.66ip.cn/)
-* 快代理IP [http://www.kuaidaili.com/](http://www.kuaidaili.com/)
+* 66ip.cn [http://m.66ip.cn/index.html](http://m.66ip.cn/index.html)
 
 ## 截图
-![](https://ooo.0o0.ooo/2016/12/14/58514ffff140b.png)
+![](https://i.loli.net/2018/02/01/5a732dd9caebe.jpg)
