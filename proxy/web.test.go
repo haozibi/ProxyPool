@@ -5,10 +5,10 @@ func init() {
 		name:         "test",
 		isAvailable:  true,
 		timeInterval: 2,
-		getList:      tt,
+		getList:      testWeb,
 	})
 }
 
-func tt() ([]string, error) {
+func testWeb() ([]string, error) {
 	return []string{"127.0.0.1:1080"}, nil
 }

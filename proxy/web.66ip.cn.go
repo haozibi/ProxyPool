@@ -4,10 +4,10 @@ import "regexp"
 
 func init() {
 	addProxy(&proxy{
-		name:         "66ip.cn",
-		isAvailable:  true,
-		timeInterval: 60,
-		getList:      get66IP,
+		name:         "66ip.cn", //名称
+		isAvailable:  true,      // 是否启用
+		timeInterval: 60,        // 每次启动间隔
+		getList:      get66IP,   // 具体方法
 	})
 }
 
