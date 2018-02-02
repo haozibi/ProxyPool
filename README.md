@@ -1,6 +1,9 @@
 # proxy
 
-[![Build Status](https://travis-ci.org/haozibi/ProxyPool.svg?branch=master)](https://travis-ci.org/haozibi/ProxyPool) ![](https://img.shields.io/badge/language-go-blue.svg)
+[![Build Status](https://travis-ci.org/haozibi/ProxyPool.svg?branch=master)](https://travis-ci.org/haozibi/ProxyPool) 
+[![goreportcard](https://goreportcard.com/badge/github.com/haozibi/ProxyPool)](https://goreportcard.com/report/github.com/haozibi/ProxyPool)
+[![GoDoc](https://godoc.org/github.com/haozibi/ProxyPool?status.svg)](https://godoc.org/github.com/haozibi/ProxyPool)
+![](https://img.shields.io/badge/language-go-blue.svg)
 
 **代理 IP 筛选**，由于网络上获取的代理不尽人意，所以写了个程序对代理进行筛选。
 
