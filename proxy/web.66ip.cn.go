@@ -4,9 +4,9 @@ import "regexp"
 
 func init() {
 	addProxy(&proxy{
-		name:         "66ip.cn", //名称
+		name:         "66ip.cn", // 名称
 		isAvailable:  true,      // 是否启用
-		timeInterval: 60,        // 每次启动间隔
+		timeInterval: 60,        // 每次启动间隔，以秒为单位
 		getList:      get66IP,   // 具体方法
 	})
 }

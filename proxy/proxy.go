@@ -105,12 +105,13 @@ func startProxy() {
 				p.init()
 				s, err := p.getList()
 				if err != nil {
-					gg.Errorf("Proxy [%v] error,%v\n", p.name, err)
+					gg.Infof("Proxy [%v] waiting %v second, due to error,%v\n", p.name, p.timeInterval, err)
 					time.Sleep(time.Duration(p.timeInterval) * time.Second)
 					continue
 				}
 				p.allList = append(p.allList, s...)
 				p.checkProxy()
+				gg.Infof("Proxy [%v] waiting %v second...\n", p.name, p.timeInterval)
 				time.Sleep(time.Duration(p.timeInterval) * time.Second)
 			}
 		}(v, &wg)

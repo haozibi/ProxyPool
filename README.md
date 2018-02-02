@@ -14,7 +14,7 @@
 
 > go get -u -v github.com/haozibi/ProxyPool
 
-**注意：**可以参考 `proxy/web.66ip.cn.go` 和 `proxy/web.test.go` 编写专属获取代码获取更多待筛选的代理 IP
+**注意：** 可以参考 `proxy/web.66ip.cn.go` 和 `proxy/web.test.go` 编写专属获取代码获取更多待筛选的代理 IP
 
 ## 示例
 
