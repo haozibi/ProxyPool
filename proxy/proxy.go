@@ -23,6 +23,10 @@ var Proxys []*proxy
 var proxyOKList = make(chan string, maxListLen)
 
 func addProxy(p *proxy) {
+	if !p.isAvailable {
+		gg.Infof("Proxy [%v] not available\n", p.name)
+		return
+	}
 	Proxys = append(Proxys, p)
 }
 
