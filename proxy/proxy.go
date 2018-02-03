@@ -44,7 +44,7 @@ func (p *proxy) init() {
 
 // 检查代理是否可用
 // todo: 增加多个测试链接
-func (p *proxy) checkProxy() {
+func (p *proxy) checkProxy(isWeb bool) {
 	// fmt.Println(runtime.NumGoroutine())
 	if len(p.allList) == 0 {
 		gg.Infof("Proxy [%v] not get ip:port", p.name)
@@ -63,7 +63,11 @@ func (p *proxy) checkProxy() {
 			}
 			_, ok, _ := HttpFunc(testUrl, uri, "GET")
 			if ok {
-				addList(uri)
+				if isWeb {
+					addWebList(uri)
+				} else {
+					addList(uri)
+				}
 			}
 			gg.Debugf("Proxy [%v] %v => %v\n", p.name, uri, ok)
 			return
@@ -95,10 +99,10 @@ func init() {
 }
 
 func StartProxy() {
-	go startProxy()
+	go startProxy(false)
 }
 
-func startProxy() {
+func startProxy(isWeb bool) {
 	if len(Proxys) == 0 {
 		gg.Errorf("Not found available proxy server\n")
 		return
@@ -121,7 +125,7 @@ func startProxy() {
 					continue
 				}
 				p.allList = append(p.allList, s...)
-				p.checkProxy()
+				p.checkProxy(isWeb)
 				gg.Infof("Proxy [%v] waiting %v second...\n", p.name, p.timeInterval)
 				time.Sleep(time.Duration(p.timeInterval) * time.Second)
 			}
