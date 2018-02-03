@@ -64,9 +64,13 @@ func (p *proxy) checkProxy(isWeb bool) {
 			_, ok, _ := HttpFunc(testUrl, uri, "GET")
 			if ok {
 				if isWeb {
-					addWebList(uri)
+					addWebList(uri, true)
 				} else {
 					addList(uri)
+				}
+			} else {
+				if isWeb {
+					addWebList(uri, false)
 				}
 			}
 			gg.Debugf("Proxy [%v] %v => %v\n", p.name, uri, ok)

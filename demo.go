@@ -12,7 +12,7 @@ func main() {
 	defer gg.Flush()
 
 	gg.SetOutLevel("INFO")
-	gg.SetOutType("SIMPLE")
+	// gg.SetOutType("SIMPLE")
 	gg.SetPrefix("[ProxyPool] ")
 
 	// 设置代理测试网站
