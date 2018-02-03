@@ -63,15 +63,26 @@ func (p *proxy) checkProxy() {
 			}
 			_, ok, _ := HttpFunc(testUrl, uri, "GET")
 			if ok {
-				mutex.Lock()
-				proxyOKList <- uri
-				mutex.Unlock()
+				addList(uri)
 			}
 			gg.Debugf("Proxy [%v] %v => %v\n", p.name, uri, ok)
 			return
 		}(v, &wg)
 	}
 	wg.Wait()
+}
+
+func addList(s string) {
+	mutex.Lock()
+	proxyOKList <- s
+	mutex.Unlock()
+}
+
+func getList() string {
+	rmutex.Lock()
+	s := <-proxyOKList
+	rmutex.Unlock()
+	return s
 }
 
 func init() {
@@ -130,8 +141,5 @@ func SetTestUrl(uri string) error {
 
 // 获取一个可用的代理
 func GetProxy() string {
-	rmutex.Lock()
-	s := <-proxyOKList
-	rmutex.Unlock()
-	return s
+	return getList()
 }
