@@ -20,9 +20,11 @@ var (
 func StartProxyByWeb() {
 	go startProxy(true)
 	dialRedis()
+	defer connRedis.Close()
 
 	http.HandleFunc("/", index)
-	http.HandleFunc("/ip.json", proxyIP)
+	http.HandleFunc("/get", getIP)
+	http.HandleFunc("/delete", deleteIP) // /delete?ip=123.123.123.123:1024
 
 	gg.Infoln("listen...")
 	err := http.ListenAndServe(":"+port, nil)
@@ -40,7 +42,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
-func proxyIP(w http.ResponseWriter, r *http.Request) {
+func getIP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
 	s := getWebList()
 	// w.Write()
@@ -48,12 +50,34 @@ func proxyIP(w http.ResponseWriter, r *http.Request) {
 	return
 }
 
+// /delete?ip=123.123.123.123:1024
+func deleteIP(w http.ResponseWriter, r *http.Request) {
+	if r.Method != "POST" {
+		fmt.Fprintf(w, "404 page not found\n")
+		return
+	}
+	r.ParseForm()
+	ip := r.Form.Get("ip")
+	if m, _ := regexp.MatchString(regexIPPort, ip); !m {
+		fmt.Fprintf(w, "Url %v not match regex\n", ip)
+		return
+	}
+	if deleteWebList(ip) {
+		fmt.Fprintf(w, "ok")
+		return
+	}
+	fmt.Fprintf(w, "%v,error", ip)
+	return
+}
+
 // 把 IP 添加到 Redis 中
 func addWebList(uri string) {
 	if m, _ := regexp.MatchString(regexIPPort, uri); !m {
+		gg.Errorf("Url %v not match regex\n", uri)
 		return
 	}
 	var r proxyJson
+
 	s, err := getRString(uri)
 	if err == nil {
 		// 说明存在，更新数据
@@ -105,16 +129,29 @@ func getWebList() string {
 		i = i + 1
 		if err != nil {
 			gg.Errorf("Get sort set error,%v\n", err)
-			// todo: 删除错误数据
 			continue
 		}
 		a, err := getRString(m[0])
 		if err != nil {
 			gg.Errorf("Get redis value error,%v\n", err)
-			// todo: 删除错误数据
+			if deleteWebList(m[0]) {
+				gg.Debugf("Get redis value error,so delte %v\n", m[0])
+			}
 			continue
 		}
 		return a
 	}
 	return ""
+}
+
+func deleteWebList(uri string) bool {
+	if m, _ := regexp.MatchString(regexIPPort, uri); !m {
+		gg.Errorf("Url %v not match regex\n", uri)
+		return false
+	}
+	if deleteRString(uri) == 0 || deleteRSortSet(uri) == 0 {
+		gg.Errorf("Delete %v error", uri)
+		return false
+	}
+	return true
 }

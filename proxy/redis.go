@@ -48,6 +48,16 @@ func getRString(key string) (string, error) {
 	return fmt.Sprintf("%v", s), err
 }
 
+// 删除 SortSet 中单个元素，成功删除则返回1，失败或者不存在返回0
+func deleteRString(key string) int {
+	if len(key) == 0 {
+		return 0
+	}
+	key = strings.Replace(key, ":", "-", -1)
+	a, _ := redis.Int(connRedis.Do("DEL", key))
+	return a
+}
+
 // 如果某个成员已经是有序集的成员，那么更新这个成员的分数值
 func setRSortSet(socre int, key string) error {
 	if len(key) == 0 {
@@ -89,4 +99,13 @@ func getRSortSet(start, end int) ([]string, error) {
 func getRSortSetNum() int {
 	i, _ := redis.Int(connRedis.Do("ZCARD", redisZaddName))
 	return i
+}
+
+// 删除 SortSet 中单个元素，成功删除则返回1，失败或者不存在返回0
+func deleteRSortSet(key string) int {
+	if len(key) == 0 {
+		return 0
+	}
+	a, _ := redis.Int(connRedis.Do("ZREM", redisZaddName, key))
+	return a
 }
